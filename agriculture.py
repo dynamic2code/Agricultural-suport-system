@@ -1,4 +1,4 @@
-
+import requests
 
 class Getdata:
     def __init__(self,location, landSize, income) -> None:
@@ -23,4 +23,6 @@ class Getdata:
             print(wrongInput)
     
     def getInfoWithAPI():
+        # use the location to get the wether soil and any other needed conditions
+        # wether =
         pass
