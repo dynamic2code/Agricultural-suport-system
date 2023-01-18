@@ -42,6 +42,7 @@ def extracting_data():
             monthsList.append(eachMonth)
             i += 1
         print(monthsList)
+
     #show parttens of the climate with  time
     # dataFrame = pd.DataFrame(columns = [columnList],
     #                          data= [monthsList])
