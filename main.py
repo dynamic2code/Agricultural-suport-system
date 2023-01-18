@@ -21,7 +21,7 @@ def extracting_data():
 
             if row[1] not in months:
                 months.append(row[1])
-                #bbhb
+
 
     months.pop(0)
     years.pop(0)
@@ -30,16 +30,18 @@ def extracting_data():
 
     columnList = years.insert(0,'month')
     monthsList = []
-    for month in months:
-        eachMonth = [month]
-        with open(file, 'r') as f:
-            rows = csv.reader(f)
-            for row in rows:
-                if row[1] == month:
-                    eachMonth.append(row[2])
-        monthsList.append(eachMonth)
 
-    print(monthsList)
+    with open(file, 'r') as f:
+        rows = csv.reader(f)
+        i = 0
+        while months[i] in months:
+            eachMonth = [months[i]]
+            for row in rows:
+                if row[1] == months[i]:
+                    eachMonth.append(row[2])
+            monthsList.append(eachMonth)
+            i += 1
+        print(monthsList)
     #show parttens of the climate with  time
     # dataFrame = pd.DataFrame(columns = [columnList],
     #                          data= [monthsList])
