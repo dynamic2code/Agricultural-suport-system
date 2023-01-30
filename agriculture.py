@@ -14,6 +14,7 @@ class Getdata:
         # verifying the input to avoid errors 
 
         try:
+            
             type(self.location) == str 
             type(self.landSize) == int
             type(self.income)   == int
