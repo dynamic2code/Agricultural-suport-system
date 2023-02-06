@@ -6,5 +6,9 @@ def extracting_data():
 #mean for all the years will be 
 	mean_for_location = data["Rainfall - (MM)"].mean()
 	print(mean_for_location)
+#grouping the data by years to get the mean per year and get the climatic progression
+	years = data.groupby("Year").count()
+	print(years)
+#grouping the data  into months to get the seasons of the location
 
 extracting_data()
