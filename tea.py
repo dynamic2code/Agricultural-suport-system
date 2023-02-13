@@ -12,6 +12,7 @@ def extracting_data():
 	
 	with open(file,'r') as f:
 		rows = csv.reader(f)
+		#me
 		
 		for row in rows:
 			print(row[0])
