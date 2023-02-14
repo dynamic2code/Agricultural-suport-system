@@ -1,6 +1,6 @@
+import data_patterns
 import pandas as pd
 import csv
-
 
 def extracting_data():
     file = "kenya-climate-data-1991-2016-rainfallmm.csv"
@@ -15,7 +15,7 @@ def extracting_data():
         # me
 
         for row in rows:
-            print(row[0])
+            # print(row[0])
             if row[0] not in years:
                 years.append(row[0])
 
@@ -27,21 +27,35 @@ def extracting_data():
     years.pop(0)
     print("This are the unique years", years)
     print("this are the distinct months", months)
-    print("for the culture")
+
+    columnList = years.insert(0,'month')
+    monthsList = []
+    for month in months:
+        eachMonth = [month]
+        with open(file, 'r') as f:
+            rows = csv.reader(f)
+            for row in rows:
+                if row[1] == month:
+                    eachMonth.append(row[2])
+        monthsList.append(eachMonth)
+
+    print(monthsList)
+    #show parttens of the climate with  time
+    # dataFrame = pd.DataFrame(columns = [columnList],
+    #                          data= [monthsList])
+    # print(dataFrame)
 
 
-# grouping the data by years to get the mean per year and get the climatic progression
-# years = data.groupby("Year").count()
-# print(years)
-# # getting all the unique years and months for grouping pourposes
-# years = []
-# with open(file, 'r') as file:
-#     rows = csv.reader(file)
-#     for row in rows:
-#         if row[0] not in years:
-#             years.append(row[0])
-#             years.pop(0)
-# print(years)
-# grouping the data  into months to get the seasons of the location
+    #telling seasons
+    #rainy season ,dry season and intermidiate
+
+    rainnyMonths = []
+    dryMonts = []
+    intermidiateMonths = []
+
+
+
+
+
 
 extracting_data()
