@@ -41,6 +41,7 @@ def extracting_data():
                     eachMonth.append(row[2])
             monthsList.append(eachMonth)
             i += 1
+
         print(monthsList)
 
     #show parttens of the climate with  time
