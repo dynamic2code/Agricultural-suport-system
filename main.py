@@ -36,6 +36,25 @@ def extracting_data():
         print('Error code: ', e.code, ErrorInfo)
         sys.exit()
 
+    # weather soil temp, soil moisture, evaporation, wind speed, wind direction, direct normal radiation
+    try:
+        ResultBytes = urllib.request.urlopen(
+            "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Nairobi/last30days?unitGroup=metric&elements=windspeed50%2Cwinddir50%2Cdniradiation%2Csoiltemp04%2Csoilmoisture04%2Cet0&include=days&key=YOUR_API_KEY&contentType=csv")
+
+        # Parse the results as CSV
+        CSVText = csv.reader(codecs.iterdecode(ResultBytes, 'utf-8'))
+
+    except urllib.error.HTTPError as e:
+        ErrorInfo = e.read().decode()
+        print('Error code: ', e.code, ErrorInfo)
+        sys.exit()
+    except urllib.error.URLError as e:
+        ErrorInfo = e.read().decode()
+        print('Error code: ', e.code, ErrorInfo)
+        sys.exit()
+
+
+
 
     #crop recomendation dataset from kaggel https://www.kaggle.com/datasets/atharvaingle/crop-recommendation-dataset?resource=download
     # N - ratio of Nitrogen content in soil
