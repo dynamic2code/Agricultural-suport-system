@@ -140,6 +140,7 @@ def crop_recomendation():
     y_pred = model.predict(extracting_data())  # predicted target values
     y_pred2 = model.predict(extracting_data2(location))
 
+
     crops = ['rice', 'maize', 'chickpea', 'kidneybeans', 'pigeonpeas',
        'mothbeans', 'mungbean', 'blackgram', 'lentil', 'pomegranate',
        'banana', 'mango', 'grapes', 'watermelon', 'muskmelon', 'apple',
@@ -150,7 +151,31 @@ def crop_recomendation():
     print(crops[crop1])
     print(crops[crop2])
 
+def price_data():
+    state = []
+    district = []
+    market = []
+    commodity = []
+    min_price = []
+    max_price = []
+
+    zipped = list(zip(state, district, market, commodity, min_price, max_price))
+    x_new = pd.DataFrame(zipped, columns=['state', 'district', 'market', 'commodity', 'min_price', 'max_price'])
+    return x_new
+
+
+def economic():
+    model = joblib.load('price_prediction (1).h5')
+    y_pred = model.predict(price_data())  # predicted target values
+
+    price = y_pred[0]
+    print(price)
+
+
+def farming_activity():
+
 
 
 # extracting_data()
 crop_recomendation()
+economic()
