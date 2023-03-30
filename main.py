@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import requests
 import secret
@@ -10,8 +11,11 @@ import sys
 
 import csv
 import codecs
+from flask import Flask, request, jsonify
 
-
+app = Flask(__name__)
+def hello():
+    return "where I start"
 
 def extracting_data():
     #weater data from timeline wether Api
@@ -30,46 +34,59 @@ def extracting_data():
         # Parse the results as CSV
     CSVText = csv.reader(response.text.splitlines(), delimiter=',', quotechar='"')
 
-    for row in CSVText:
-        # process the row here
-        print(row)
+    temp = CSVText[1:, 2].astype(float)
 
-        # try:
-    #     ResultBytes = urllib.request.urlopen(
-    #         f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{location}/{startDate}/{endDate}?unitGroup=metric&include=days&key={secret.API_KEY}&contentType=csv")
-    #
-    #     # Parse the results as CSV
-    #     CSVText = csv.reader(codecs.iterdecode(ResultBytes, 'utf-8'))
-    #     print(CSVText)
-    #
-    # except urllib.error.HTTPError as e:
-    #     ErrorInfo = e.read().decode()
-    #     print('Error code: ', e.code, ErrorInfo)
-    #     sys.exit()
-    # except urllib.error.URLError as e:
-    #     ErrorInfo = e.read().decode()
-    #     print('Error code: ', e.code, ErrorInfo)
-    #     sys.exit()
-    #
-    # # weather soil temp, soil moisture, evaporation, wind speed, wind direction, direct normal radiation
-    # try:
-    #     ResultBytes = urllib.request.urlopen(
-    #         f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Nairobi/last30days?unitGroup=metric&elements=windspeed50%2Cwinddir50%2Cdniradiation%2Csoiltemp04%2Csoilmoisture04%2Cet0&include=days&key={secret.API_KEY}&contentType=csv")
-    #
-    #     # Parse the results as CSV
-    #     CSVText = csv.reader(codecs.iterdecode(ResultBytes, 'utf-8'))
-    #
-    # except urllib.error.HTTPError as e:
-    #     ErrorInfo = e.read().decode()
-    #     print('Error code: ', e.code, ErrorInfo)
-    #     sys.exit()
-    # except urllib.error.URLError as e:
-    #     ErrorInfo = e.read().decode()
-    #     print('Error code: ', e.code, ErrorInfo)
-    #     sys.exit()
-    #
-    #     X_new = [[...], [...], ...]
-    # return x_new
+    # Calculate the mean of the column
+    mean_temp = np.mean(temp)
+
+    humidity = CSVText[1:, 9].astype(float)
+
+    # Calculate the mean of the column
+    mean_humidity = np.mean(humidity)
+
+    n = 23
+    p = 23
+    k = 23
+    ph = 7
+    rainfall = 220
+
+    x_new = [n, p, k, mean_temp, mean_humidity, ph, rainfall]
+
+def crop_recomendation(x_new):
+    # load the saved model
+    model = joblib.load('crop_prediction.h5')
+    # make predictions on new data
+    # x_new =   #new data as a list of feature vectors
+    y_pred = model.predict(x_new)  # predicted target values
+
+    return y_pred
+
+
+def process_data():
+    data = request.get_json()
+
+    # Process the data
+    # result = []
+    # for item in data:
+    #     result.append({
+    #         'name': item['name'],
+    #         'age': item['age'] * 2,
+    #     })
+
+    # Return the result
+    if data:
+        return 'its done'
+    # return jsonify(result)
+@app.route("/")
+def execute():
+    hello()
+    process_data()
+    return "Done"
+
+if __name__ == "__main__":
+  app.run()
+
+
     #crop recomendation dataset from kaggel https://www.kaggle.com/datasets/atharvaingle/crop-recommendation-dataset?resource=download
     # N - ratio of Nitrogen content in soil
     # P - ratio of Phosphorous content in soil
@@ -78,14 +95,5 @@ def extracting_data():
     # humidity - relative humidity in %
     # ph - ph value of the soil
     # rainfall - rainfall in mm
-def crop_recomendation(X_new):
-    # load the saved model
-    model = joblib.load('crop_prediction.h5')
-    # make predictions on new data
-    #X_new =   new data as a list of feature vectors
-    y_pred = model.predict(X_new)  # predicted target values
 
-    return y_pred
-
-extracting_data()
 
