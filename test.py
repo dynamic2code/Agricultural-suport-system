@@ -1,4 +1,6 @@
 import csv
+import urllib
+from datetime import date, timedelta
 
 import pandas as pd
 import sklearn
@@ -171,11 +173,250 @@ def economic():
     price = y_pred[0]
     print(price)
 
-
-def farming_activity():
-
+#get crops activity and best conditions to accomplish them in
 
 
-# extracting_data()
+def get_future_weather():
+    #get future weather to predict activities
+    global report;
+    report = dict()
+    # location = input("location:")
+    # try:
+    #     ResultBytes = urllib.request.urlopen(
+    #         f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{location}?unitGroup=metric&include=events&key={secret.API_KEY}&contentType=csv")
+    #
+    #     # Parse the results as CSV
+    #     # CSVText = csv.reader(codecs.iterdecode(ResultBytes, 'utf-8'))
+    #     CSVText = csv.reader(ResultBytes.text.splitlines(), delimiter=',', quotechar='|')
+    #
+    #     tem = []
+    #     hum = []
+    #     for row in CSVText:
+    #         # print(row)
+    #         for column in row:
+    #             if column == row[4]:
+    #                 tem.append(column)
+    #
+    #         for column in row:
+    #             if column == row[9]:
+    #                 hum.append(column)
+    #
+    #     tem.pop(0)
+    #     tempNew = [float(x) for x in tem]
+    #     mean_temp = [np.mean(tempNew)]
+    #     print(mean_temp)
+    #
+    #     hum.pop(0)
+    #     humNew = [float(x) for x in hum]
+    #     mean_hum = [np.mean(humNew)]
+    #     print(mean_hum)
+    #
+    # except urllib.error.HTTPError as e:
+    #     ErrorInfo = e.read().decode()
+    #     print('Error code: ', e.code, ErrorInfo)
+    #     sys.exit()
+    # except  urllib.error.URLError as e:
+    #     ErrorInfo = e.read().decode()
+    #     print('Error code: ', e.code, ErrorInfo)
+    #     sys.exit()
+    response = requests.request("GET",
+                                f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{location}/today?unitGroup=metric&include=days&key={secret.API_KEY}&contentType=csv")
+    if response.status_code != 200:
+        print('Unexpected Status code: ', response.status_code)
+        sys.exit()
+
+        # Parse the results as CSV
+    CSVText = csv.reader(response.text.splitlines(), delimiter=',', quotechar='|')
+
+    tem = []
+    hum = []
+    for row in CSVText:
+        # print(row)
+        for column in row:
+            if column == row[4]:
+                tem.append(column)
+
+        for column in row:
+            if column == row[9]:
+                hum.append(column)
+
+    tem.pop(0)
+    tempNew = [float(x) for x in tem]
+    report["mean_temp_today"] = [np.mean(tempNew)]
+    # print(mean_temp_today)
+
+    hum.pop(0)
+    humNew = [float(x) for x in hum]
+    report["mean_hum_today"] = [np.mean(humNew)]
+    # print(mean_hum_today)
+
+    response = requests.request("GET",
+                                f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{location}/last30days?unitGroup=metric&include=days&key={secret.API_KEY}&contentType=csv")
+    if response.status_code != 200:
+        print('Unexpected Status code: ', response.status_code)
+        sys.exit()
+
+        # Parse the results as CSV
+    CSVText = csv.reader(response.text.splitlines(), delimiter=',', quotechar='|')
+
+    tem = []
+    hum = []
+    for row in CSVText:
+        # print(row)
+        for column in row:
+            if column == row[4]:
+                tem.append(column)
+
+        for column in row:
+            if column == row[9]:
+                hum.append(column)
+
+    tem.pop(0)
+    tempNew = [float(x) for x in tem]
+    report["mean_temp_past30"] = [np.mean(tempNew)]
+    # print(mean_temp_past30)
+
+    hum.pop(0)
+    humNew = [float(x) for x in hum]
+    report["mean_hum_past30"] = [np.mean(humNew)]
+    # print(mean_hum_past30)
+
+
+    response = requests.request("GET",
+                                f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{location}/last7days?unitGroup=metric&include=days&key={secret.API_KEY}&contentType=csv")
+    if response.status_code != 200:
+        print('Unexpected Status code: ', response.status_code)
+        sys.exit()
+
+        # Parse the results as CSV
+    CSVText = csv.reader(response.text.splitlines(), delimiter=',', quotechar='|')
+
+    tem = []
+    hum = []
+    for row in CSVText:
+        # print(row)
+        for column in row:
+            if column == row[4]:
+                tem.append(column)
+
+        for column in row:
+            if column == row[9]:
+                hum.append(column)
+
+    tem.pop(0)
+    tempNew = [float(x) for x in tem]
+    report["mean_temp_past7"] = [np.mean(tempNew)]
+    # print(mean_temp_past7)
+
+    hum.pop(0)
+    humNew = [float(x) for x in hum]
+    report["mean_hum_past7"] = [np.mean(humNew)]
+    # print(mean_hum_past7)
+
+
+    response = requests.request("GET",
+                                f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{location}/last7days?unitGroup=metric&include=days&key={secret.API_KEY}&contentType=csv")
+    if response.status_code != 200:
+        print('Unexpected Status code: ', response.status_code)
+        sys.exit()
+
+        # Parse the results as CSV
+    CSVText = csv.reader(response.text.splitlines(), delimiter=',', quotechar='|')
+
+    tem = []
+    hum = []
+    for row in CSVText:
+        # print(row)
+        for column in row:
+            if column == row[4]:
+                tem.append(column)
+
+        for column in row:
+            if column == row[9]:
+                hum.append(column)
+
+    tem.pop(0)
+    tempNew = [float(x) for x in tem]
+    report["mean_temp_future7"] = [np.mean(tempNew)]
+    # print(mean_temp_future7)
+
+    hum.pop(0)
+    humNew = [float(x) for x in hum]
+    report["mean_hum_future7"] = [np.mean(humNew)]
+    # print(mean_hum_future7)
+
+    response = requests.request("GET",
+                                f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{location}/next24hours?unitGroup=metric&include=days&key={secret.API_KEY}&contentType=csv")
+    if response.status_code != 200:
+        print('Unexpected Status code: ', response.status_code)
+        sys.exit()
+
+        # Parse the results as CSV
+    CSVText = csv.reader(response.text.splitlines(), delimiter=',', quotechar='|')
+
+    tem = []
+    hum = []
+    for row in CSVText:
+        # print(row)
+        for column in row:
+            if column == row[4]:
+                tem.append(column)
+
+        for column in row:
+            if column == row[9]:
+                hum.append(column)
+
+    tem.pop(0)
+    tempNew = [float(x) for x in tem]
+    report["mean_temp_tomorrow"] = [np.mean(tempNew)]
+    # print(mean_temp_tomorrow)
+
+    hum.pop(0)
+    humNew = [float(x) for x in hum]
+    report["mean_hum_tomorrow"] = [np.mean(humNew)]
+    # print(mean_hum_tomorrow)
+
+    return report
+
+def farming_activity(report):
+    farming_activity = dict()
+    #planting
+    if (report["mean_temp_today"][0] >= 15):
+        planting = dict()
+        planting["planting_message"] = f'The temperature today is{ report["mean_temp_today"]} its a good day to plant'
+        planting["planting_date"] = date.today()
+
+        farming_activity.update(planting)
+
+    elif(report["mean_temp_today"][0] < 15):
+        if(report["mean_temp_tomorrow"][0] >= 15):
+            planting = dict()
+            planting["planting_message"] = f'The temperature tomorrow will be{report["mean_temp_tomorrow"]} its a good day to plant'
+            planting["planting_date"] = date.today() + timedelta(1)
+
+            farming_activity.update(planting)
+
+    #watering
+    if(report["mean_hum_today"][0] < 50):
+        watering = dict()
+        watering["watering_message"] = f"It is advisable for you to water the plants today"
+
+        farming_activity.update(watering)
+
+    else:
+        watering = dict()
+        watering["message"] = f"The weather conditions are great today it's not necessary to water the plants"
+
+        farming_activity.update(planting)
+
+    #pruning
+
+
+    return farming_activity
+
+
+extracting_data()
 crop_recomendation()
-economic()
+# economic()
+print(get_future_weather())
+print(farming_activity(report))
