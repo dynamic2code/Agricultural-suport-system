@@ -150,6 +150,9 @@ def crop_recomendation():
 
     crop1 = y_pred[0]
     crop2 = y_pred2[0]
+
+    crop_to_plant = dict()
+
     print(crops[crop1])
     print(crops[crop2])
 

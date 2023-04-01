@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body{
+            background-color: gray;
+        }
+        .items {
+          display: flex;
+          flex-wrap: wrap;
+        }
+
+        .item {
+          width: 100px;
+          height: 100px;
+          background-color: gray;
+          margin: 10px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 24px;
+          color: white;
+        }
+    </style>
+    <title>Content</title>
+</head>
+<body>
+    <div class="items">
+      {% for item in items %}
+      <div class="item">{{ item }}</div>
+      {% endfor %}
+    </div>
+</body>
+</html>
