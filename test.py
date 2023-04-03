@@ -16,12 +16,12 @@ import csv
 import codecs
 
 
-def extracting_data():
+def extracting_data(location):
     # weater data from timeline wether Api
     # get worning data from https://www.appsforagri.com/ it will help in comparing the needed condition and the current one
-    global location
-    location = input("enter your location: ")
-    # location = data
+    # global location
+    # location = input("enter your location: ")
+    # # location = data
     startDate = '2022-6-5'
     endDate = '2023-1-1'
 
@@ -91,46 +91,36 @@ def extracting_data2(location):
         # Parse the results as CSV
     CSVText = csv.reader(response.text.splitlines(), delimiter=',', quotechar='|')
     # CSVText = csv.reader(codecs.iterdecode(response, 'utf-8'))
-    tem = []
-    hum = []
+    tem2 = []
+    hum2 = []
     for row in CSVText:
         # print(row)
         for column in row:
             if column == row[4]:
-                tem.append(column)
+                tem2.append(column)
 
         for column in row:
             if column == row[9]:
-                hum.append(column)
+                hum2.append(column)
 
-    tem.pop(0)
-    tempNew = [float(x) for x in tem]
-    mean_temp = [np.mean(tempNew)]
+    tem2.pop(0)
+    tempNew = [float(x) for x in tem2]
+    mean_temp2 = [np.mean(tempNew)]
     # print(mean_temp)
 
-    hum.pop(0)
-    humNew = [float(x) for x in hum]
-    mean_hum = [np.mean(humNew)]
+    hum2.pop(0)
+    humNew = [float(x) for x in hum2]
+    mean_hum2 = [np.mean(humNew)]
     # print(mean_hum)
-
-
-    #
-    # humidity = CSVText[1:, 9].astype(float)
-    #
-    # # Calculate the mean of the column
-    # mean_humidity = np.mean(humidity)
-    #
-    n = [23]
-    p = [23]
+    n2 = [23]
+    p2 = [23]
     k = [23]
-    ph = [7]
-    rainfall = [220]
+    ph2 = [7]
+    rainfall2 = [220]
 
-    zipped = list(zip(n, p, mean_temp, mean_hum, ph, rainfall))
+    zipped = list(zip(n2, p2, mean_temp2, mean_hum2, ph2, rainfall2))
     x_new2 = pd.DataFrame(zipped, columns=['N', 'P', 'temperature', 'humidity', 'ph', 'rainfall'])
     # print(x_new)
-
-    return x_new2
 
 
 
@@ -151,10 +141,8 @@ def crop_recomendation():
     crop1 = y_pred[0]
     crop2 = y_pred2[0]
 
-    crop_to_plant = dict()
-
-    print(crops[crop1])
-    print(crops[crop2])
+    report["crop1"] = crop1
+    report["crop2"] = crop2
 
 def price_data():
     state = []
@@ -183,45 +171,7 @@ def get_future_weather():
     #get future weather to predict activities
     global report;
     report = dict()
-    # location = input("location:")
-    # try:
-    #     ResultBytes = urllib.request.urlopen(
-    #         f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{location}?unitGroup=metric&include=events&key={secret.API_KEY}&contentType=csv")
-    #
-    #     # Parse the results as CSV
-    #     # CSVText = csv.reader(codecs.iterdecode(ResultBytes, 'utf-8'))
-    #     CSVText = csv.reader(ResultBytes.text.splitlines(), delimiter=',', quotechar='|')
-    #
-    #     tem = []
-    #     hum = []
-    #     for row in CSVText:
-    #         # print(row)
-    #         for column in row:
-    #             if column == row[4]:
-    #                 tem.append(column)
-    #
-    #         for column in row:
-    #             if column == row[9]:
-    #                 hum.append(column)
-    #
-    #     tem.pop(0)
-    #     tempNew = [float(x) for x in tem]
-    #     mean_temp = [np.mean(tempNew)]
-    #     print(mean_temp)
-    #
-    #     hum.pop(0)
-    #     humNew = [float(x) for x in hum]
-    #     mean_hum = [np.mean(humNew)]
-    #     print(mean_hum)
-    #
-    # except urllib.error.HTTPError as e:
-    #     ErrorInfo = e.read().decode()
-    #     print('Error code: ', e.code, ErrorInfo)
-    #     sys.exit()
-    # except  urllib.error.URLError as e:
-    #     ErrorInfo = e.read().decode()
-    #     print('Error code: ', e.code, ErrorInfo)
-    #     sys.exit()
+
     response = requests.request("GET",
                                 f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{location}/today?unitGroup=metric&include=days&key={secret.API_KEY}&contentType=csv")
     if response.status_code != 200:
@@ -231,25 +181,25 @@ def get_future_weather():
         # Parse the results as CSV
     CSVText = csv.reader(response.text.splitlines(), delimiter=',', quotechar='|')
 
-    tem = []
-    hum = []
+    tem_today = []
+    hum_today = []
     for row in CSVText:
         # print(row)
         for column in row:
             if column == row[4]:
-                tem.append(column)
+                tem_today.append(column)
 
         for column in row:
             if column == row[9]:
-                hum.append(column)
+                hum_today.append(column)
 
-    tem.pop(0)
-    tempNew = [float(x) for x in tem]
+    tem_today.pop(0)
+    tempNew = [float(x) for x in tem_today]
     report["mean_temp_today"] = [np.mean(tempNew)]
     # print(mean_temp_today)
 
-    hum.pop(0)
-    humNew = [float(x) for x in hum]
+    hum_today.pop(0)
+    humNew = [float(x) for x in hum_today]
     report["mean_hum_today"] = [np.mean(humNew)]
     # print(mean_hum_today)
 
@@ -262,25 +212,25 @@ def get_future_weather():
         # Parse the results as CSV
     CSVText = csv.reader(response.text.splitlines(), delimiter=',', quotechar='|')
 
-    tem = []
-    hum = []
+    tem_last30 = []
+    hum_last30 = []
     for row in CSVText:
         # print(row)
         for column in row:
             if column == row[4]:
-                tem.append(column)
+                tem_last30.append(column)
 
         for column in row:
             if column == row[9]:
-                hum.append(column)
+                hum_last30.append(column)
 
-    tem.pop(0)
-    tempNew = [float(x) for x in tem]
+    tem_last30.pop(0)
+    tempNew = [float(x) for x in tem_last30]
     report["mean_temp_past30"] = [np.mean(tempNew)]
     # print(mean_temp_past30)
 
-    hum.pop(0)
-    humNew = [float(x) for x in hum]
+    hum_last30.pop(0)
+    humNew = [float(x) for x in hum_last30]
     report["mean_hum_past30"] = [np.mean(humNew)]
     # print(mean_hum_past30)
 
@@ -294,31 +244,31 @@ def get_future_weather():
         # Parse the results as CSV
     CSVText = csv.reader(response.text.splitlines(), delimiter=',', quotechar='|')
 
-    tem = []
-    hum = []
+    tem_last7 = []
+    hum_last7 = []
     for row in CSVText:
         # print(row)
         for column in row:
             if column == row[4]:
-                tem.append(column)
+                tem_last7.append(column)
 
         for column in row:
             if column == row[9]:
-                hum.append(column)
+                hum_last7.append(column)
 
-    tem.pop(0)
-    tempNew = [float(x) for x in tem]
+    tem_last7.pop(0)
+    tempNew = [float(x) for x in tem_last7]
     report["mean_temp_past7"] = [np.mean(tempNew)]
     # print(mean_temp_past7)
 
-    hum.pop(0)
-    humNew = [float(x) for x in hum]
+    hum_last7.pop(0)
+    humNew = [float(x) for x in hum_last7]
     report["mean_hum_past7"] = [np.mean(humNew)]
     # print(mean_hum_past7)
 
 
     response = requests.request("GET",
-                                f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{location}/last7days?unitGroup=metric&include=days&key={secret.API_KEY}&contentType=csv")
+                                f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{location}/next7days?unitGroup=metric&include=days&key={secret.API_KEY}&contentType=csv")
     if response.status_code != 200:
         print('Unexpected Status code: ', response.status_code)
         sys.exit()
@@ -326,25 +276,25 @@ def get_future_weather():
         # Parse the results as CSV
     CSVText = csv.reader(response.text.splitlines(), delimiter=',', quotechar='|')
 
-    tem = []
-    hum = []
+    tem_next7 = []
+    hum_next7 = []
     for row in CSVText:
         # print(row)
         for column in row:
             if column == row[4]:
-                tem.append(column)
+                tem_next7.append(column)
 
         for column in row:
             if column == row[9]:
-                hum.append(column)
+                hum_next7.append(column)
 
-    tem.pop(0)
-    tempNew = [float(x) for x in tem]
+    tem_next7.pop(0)
+    tempNew = [float(x) for x in tem_next7]
     report["mean_temp_future7"] = [np.mean(tempNew)]
     # print(mean_temp_future7)
 
-    hum.pop(0)
-    humNew = [float(x) for x in hum]
+    hum_next7.pop(0)
+    humNew = [float(x) for x in hum_next7]
     report["mean_hum_future7"] = [np.mean(humNew)]
     # print(mean_hum_future7)
 
@@ -357,8 +307,8 @@ def get_future_weather():
         # Parse the results as CSV
     CSVText = csv.reader(response.text.splitlines(), delimiter=',', quotechar='|')
 
-    tem = []
-    hum = []
+    tem_next24= []
+    hum_next24= []
     for row in CSVText:
         # print(row)
         for column in row:
@@ -369,13 +319,13 @@ def get_future_weather():
             if column == row[9]:
                 hum.append(column)
 
-    tem.pop(0)
-    tempNew = [float(x) for x in tem]
+    tem_next24.pop(0)
+    tempNew = [float(x) for x in tem_next24]
     report["mean_temp_tomorrow"] = [np.mean(tempNew)]
     # print(mean_temp_tomorrow)
 
-    hum.pop(0)
-    humNew = [float(x) for x in hum]
+    hum_next24.pop(0)
+    humNew = [float(x) for x in hum_next24]
     report["mean_hum_tomorrow"] = [np.mean(humNew)]
     # print(mean_hum_tomorrow)
 

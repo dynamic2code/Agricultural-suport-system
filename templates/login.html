@@ -23,8 +23,6 @@
 
         .login-form input[type="text"],
         .login-form input[type="number"],
-        .login-form input[type="email"],
-        .login-form input[type="password"],
         .login-form input[type="submit"] {
           width: 100%;
           padding: 10px;
@@ -45,7 +43,7 @@
 <body>
 <div class="login-form">
   <h2>Farmers Details</h2>
-  <form method="POST" action="/content">
+  <form method="POST" action="/">
     <label for="name">Name:</label>
     <input type="text" id="name" name="name" required>
 
@@ -55,13 +53,13 @@
       <label for="land_size">Land size:</label>
     <input type="number" id="land_size" name="land_size" required>
 
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required>
+<!--    <label for="email">Email:</label>-->
+<!--    <input type="email" id="email" name="email" required>-->
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required>
+<!--    <label for="password">Password:</label>-->
+<!--    <input type="password" id="password" name="password" required>-->
 
-    <a href="{{url_for('app_blueprint.content')}}"></a><input type="submit" value="submit">
+    <a href="{{url_for('app_blueprint.content')}}"><input type="submit" value="submit"></a>
   </form>
 </div>
 </body>
