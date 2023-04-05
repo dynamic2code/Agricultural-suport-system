@@ -1,29 +1,130 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <style>-->
+<!--        body{-->
+<!--            background-color: gray;-->
+<!--        }-->
+<!--        .login-form {-->
+<!--          max-width: 400px;-->
+<!--          margin: 0 auto;-->
+<!--          display: flex;-->
+<!--          flex-direction: column;-->
+<!--          justify-content: center;-->
+<!--          align-items: center;-->
+<!--        }-->
+
+<!--        .login-form label {-->
+<!--          display: block;-->
+<!--          margin-bottom: 10px;-->
+<!--        }-->
+
+
+<!--        .login-form input[type="text"],-->
+<!--        .login-form input[type="number"],-->
+<!--        .login-form input[type="submit"],-->
+<!--        .login-form input[type="password"]{-->
+<!--          width: 100%;-->
+<!--          padding: 10px;-->
+<!--          border-radius: 5px;-->
+<!--          border: none;-->
+<!--          margin-bottom: 20px;-->
+<!--        }-->
+
+<!--        .login-form input[type="submit"] {-->
+<!--          background-color: blue;-->
+<!--          color: white;-->
+<!--          cursor: pointer;-->
+<!--        }-->
+
+<!--    </style>-->
+<!--    <title>Get started</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="login-form">-->
+<!--  <h2>Farmers Details</h2>-->
+<!--  <form method="POST" action="/">-->
+<!--    <label for="name">Name:</label>-->
+<!--    <input type="text" id="name" name="name" required>-->
+
+<!--    <label for="location">Location:</label>-->
+<!--    <input type="text" id="location" name="location" required>-->
+
+<!--      <label for="land_size">Land size:</label>-->
+<!--    <input type="number" id="land_size" name="land_size" required>-->
+
+<!--&lt;!&ndash;    <label for="email">Email:</label>&ndash;&gt;-->
+<!--&lt;!&ndash;    <input type="email" id="email" name="email" required>&ndash;&gt;-->
+
+<!--    <label for="password">Password:</label>-->
+<!--    <input type="password" id="password" name="password" required>-->
+
+<!--    <a href="{{url_for('app_blueprint.content')}}"><input type="submit" value="submit"></a>-->
+<!--  </form>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <style>
         body{
-            background-color: gray;
+            background-color: white;
         }
-        .login-form {
-          max-width: 400px;
+        .login-wrapper {
+          max-width: 800px;
           margin: 0 auto;
           display: flex;
-          flex-direction: column;
           justify-content: center;
           align-items: center;
         }
-
-        .login-form label {
-          display: block;
-          margin-bottom: 10px;
+        .login-image {
+          width: auto;
+          height: 400px;
+          background-image: url('your-image-url.jpg');
+          background-size: cover;
+          border-radius: 5px;
+          margin-right: 20px;
         }
 
+<!--        .login-form {-->
+<!--          width: 400px;-->
+<!--          background-color: blue;-->
+<!--          color: white;-->
+<!--          border-radius: 5px;-->
+<!--          padding: 10px;-->
+<!--          margin-left: 10px;-->
+<!--        }-->
+
+        .login-form h2 {
+          margin-top: 0;
+        }
+
+<!--        .login-form label {-->
+<!--          display: block;-->
+<!--          margin-bottom: 10px;-->
+<!--        }-->
+
+        .login-form {
+          flex-grow: 1; /* fill remaining space */
+          background-color: blue;
+          color: white;
+          border-radius: 5px;
+          padding: 10px;
+          margin: 0 auto;
+          margin-top: auto;
+          margin-bottom: auto;
+        }
+        h1{
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
 
         .login-form input[type="text"],
         .login-form input[type="number"],
-        .login-form input[type="submit"] {
+        .login-form input[type="submit"],
+        .login-form input[type="password"]{
           width: 100%;
           padding: 10px;
           border-radius: 5px;
@@ -32,35 +133,45 @@
         }
 
         .login-form input[type="submit"] {
-          background-color: blue;
-          color: white;
+          background-color: white;
+          color: blue;
           cursor: pointer;
         }
 
+        .login-image {
+          width: 400px;
+          height: 400px;
+          background-image: url('your-image-url.jpg');
+          background-size: cover;
+          border-radius: 5px;
+        }
     </style>
     <title>Get started</title>
 </head>
 <body>
-<div class="login-form">
-  <h2>Farmers Details</h2>
-  <form method="POST" action="/">
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" required>
+<div class="login-wrapper">
+    <div><h1>Mkulima connect</h1></div>
+  <div class="login-image">
+       <img src="{{ url_for('static', filename='images/cfb6c6ad92a27c25278a312c5bbbc730 (1).jpg') }}" alt="Your Image">
+  </div>
+  <div class="login-form">
+    <h2>Farmers Details</h2>
+    <form method="POST" action="/">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required>
 
-    <label for="location">Location:</label>
-    <input type="text" id="location" name="location" required>
+      <label for="location">Location:</label>
+      <input type="text" id="location" name="location" required>
 
       <label for="land_size">Land size:</label>
-    <input type="number" id="land_size" name="land_size" required>
+      <input type="number" id="land_size" name="land_size" required>
 
-<!--    <label for="email">Email:</label>-->
-<!--    <input type="email" id="email" name="email" required>-->
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
 
-<!--    <label for="password">Password:</label>-->
-<!--    <input type="password" id="password" name="password" required>-->
-
-    <a href="{{url_for('app_blueprint.content')}}"><input type="submit" value="submit"></a>
-  </form>
+      <input type="submit" value="Submit">
+    </form>
+  </div>
 </div>
 </body>
 </html>

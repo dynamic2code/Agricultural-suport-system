@@ -40,7 +40,8 @@ def get_details():
     name = request.form['name']
     location = request.form['location']
     land_size = request.form['land_size']
-    cur.execute("INSERT INTO farmer (name, location, land_size) VALUES (?, ?, ?)", (name, location, land_size))
+    password = generate_password_hash(request.form['password'])
+    cur.execute("INSERT INTO farmer (name, location, land_size, password) VALUES (?, ?, ?, ?)", (name, location, land_size, password))
 
     # Commit the changes and close the connection
     conn.commit()
@@ -149,8 +150,8 @@ def content():
     crop1 = y_pred[0]
     crop2 = y_pred2[0]
 
-    report["crop1"] = crop1
-    report["crop2"] = crop2
+    report["crop prediction one "] = crops[crop1]
+    report["crop prediction two "] = crops[crop2]
 
     #economic prediction
 
@@ -307,8 +308,8 @@ def content():
         # Parse the results as CSV
     CSVText = csv.reader(response.text.splitlines(), delimiter=',', quotechar='|')
 
-    tem_next24= []
-    hum_next24= []
+    tem_next24 = []
+    hum_next24 = []
     for row in CSVText:
         # print(row)
         for column in row:
@@ -329,38 +330,46 @@ def content():
     report["mean_hum_tomorrow"] = [np.mean(humNew)]
     # print(mean_hum_tomorrow)
 
-    farming_activity = dict()
+    # farming_activity = dict()
     # planting
-    if (report["mean_temp_today"][0] >= 15):
-        planting = dict()
-        planting["planting_message"] = f'The temperature today is{report["mean_temp_today"]} its a good day to plant'
-        planting["planting_date"] = date.today()
+    if report["mean_temp_today"][0] >= 15:
+        # planting = dict()
+        report["planting_message"] = f'The temperature today is{report["mean_temp_today"]} its a good day to plant'
+        report["planting_date"] = date.today()
 
-        farming_activity.update(planting)
+        # farming_activity.update(planting)
+        # report
 
     elif (report["mean_temp_today"][0] < 15):
         if (report["mean_temp_tomorrow"][0] >= 15):
-            planting = dict()
-            planting[
-                "planting_message"] = f'The temperature tomorrow will be{report["mean_temp_tomorrow"]} its a good day to plant'
-            planting["planting_date"] = date.today() + timedelta(1)
 
-            farming_activity.update(planting)
+            report["planting_message"] = f'The temperature tomorrow will be{report["mean_temp_tomorrow"]} its a good day to plant'
+            report["planting_date"] = date.today() + timedelta(1)
+
+
 
     # watering
-    if (report["mean_hum_today"][0] < 50):
-        watering = dict()
-        watering["watering_message"] = f"It is advisable for you to water the plants today"
+    if report["mean_hum_today"][0] < 50:
 
-        farming_activity.update(watering)
+        report["watering_message"] = f"It is advisable for you to water the plants today"
 
     else:
-        watering = dict()
-        watering["message"] = f"The weather conditions are great today it's not necessary to water the plants"
 
-        farming_activity.update(planting)
+        report["message"] = f"The weather conditions are great today it's not necessary to water the plants"
 
-    report.update(farming_activity)
 
-    return render_template("content.html", report=report)
+
+
+    # print(report)
+    html_output = ''
+    for key, value in report.items():
+        html_output += '<div><p><b>{}</b>: {}</p></div>'.format(key, value)
+    # return html_output
+    # divs = []
+    # for key, value in report.items():
+    #     divs.append(f"<div><strong>{key}:</strong> {value}</div>")
+    #
+    # html_data = ' '.join(divs)
+
+    return render_template("content.html", html_data= html_output)
 
